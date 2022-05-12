@@ -1,1 +1,1 @@
-# Wordle
+# WordleJS

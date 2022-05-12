@@ -4,3 +4,26 @@
 button { 
     font-size: 5px;
 }
+
+.col {
+    border: 1px solid red;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 25px;
+    height: 90px;
+  }
+
+.col {
+    font-size: 56px;
+    text-align: center;
+}
+
+.container{
+    padding: 7px 0px;
+}
+
+@media (min-width: 992px){
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 520px;
+    }
+}
