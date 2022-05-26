@@ -10,7 +10,8 @@ button {
     box-sizing: border-box;
     display: inline-block;
     width: 25px;
-    height: 90px;
+    height: 86px;
+    padding: 0;
   }
 
 .col {
@@ -22,8 +23,24 @@ button {
     padding: 7px 0px;
 }
 
+#green {
+    background-color: green;
+    color: white;
+}
+
+#orange {
+    background-color: orange;
+    color: white;
+}
+
+#grey {
+    background-color: grey;
+    color: white;
+}
+
 @media (min-width: 992px){
     .container, .container-lg, .container-md, .container-sm {
-        max-width: 520px;
+        max-width: 440px;
     }
 }
+

@@ -28,14 +28,12 @@ export class Trie{
     
      if (currentNode.children[index] == null){
        currentNode.children[index] = new TrieNode(key[level]);
-       console.log(String(key[level]) + " inserted");
      }
      currentNode = currentNode.children[index];
    }
     
    //Mark the end character as leaf node
    currentNode.setLastLetter();
-   console.log("'" + key + "' inserted");
   };
   
  //Function to search a given key in Trie

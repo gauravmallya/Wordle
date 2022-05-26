@@ -3,6 +3,7 @@ import {Trie} from './index.js';
 var initialCount = 0
 var initialLimit = 5
 var currWord = ""
+var targetWord = ""
 var words = []
 var trieData = new Trie();
 
@@ -17,12 +18,13 @@ function createListWords(text) {
     for(var i = 0; i < words.length; i++){
         trieData.insert(words[i])
     }
-    console.log("done")
+    targetWord = words[Math.floor(Math.random() * words.length)]
+    console.log("Words loaded in!")
 }
 
 function addButtons(){
     var topKeys = ["Q","W","E","R","T","Y","U","I","O","P",]
-    var middleKeys = ["A","S","D","F","G","H","I","J","K","L"]
+    var middleKeys = ["A","S","D","F","G","H","J","K","L"]
     var bottomKeys = ["ENTER","Z","X","C","V","B","N","M","DEL"]
     var arrays = [topKeys, middleKeys, bottomKeys]
     var types = ["buttons-top", "buttons-middle", "buttons-bottom"]
@@ -31,7 +33,7 @@ function addButtons(){
         for(var i = 0; i < currentRow.length; i++) {
             var button = document.createElement("button");
             button.innerHTML = currentRow[i];
-            button.className = "btn btn-outline-success";
+            button.className = "btn btn-outline-secondary " + currentRow[i];
             var buttonDiv = document.getElementById(types[j]);
             buttonDiv.appendChild(button);
         }
@@ -46,7 +48,7 @@ function addGrid(){
             var item = document.createElement("div");
             item.className = "col border";
             var box = document.createElement('div');
-                box.id = "box " + count.toString();
+                box.className = "box " + count.toString();
                 count = count + 1;
             item.appendChild(box)
             var rowDiv = document.getElementById(types[j]);
@@ -55,15 +57,11 @@ function addGrid(){
     }
 }
 
-
-
 function listenToUser(){ 
     const buttons = document.querySelectorAll('.btn');
     for(var index = 0; index < buttons.length; index++){
         const btn = buttons[index]
         btn.addEventListener('click', function(event){
-            console.log(btn.innerHTML);
-            console.log(initialCount);
             const val = btn.innerHTML
             if (initialCount < initialLimit && val != "DEL" && val != "ENTER") {
                 enterIntoGrid(initialCount, val)
@@ -75,18 +73,72 @@ function listenToUser(){
                 }
             } else if (val == "ENTER") {
                 console.log(currWord)
-                if (trieData.search(currWord)){
-                    console.log("success :)") 
+                if (currWord.length == 5 && trieData.search(currWord)){
+                    processRow(currWord)
+                    if (currWord.toLowerCase() == targetWord){
+                        console.log("Word found!")
+                    }else{
+                        if (initialLimit == 30){
+                            console.log("Game Over! The word was " + targetWord)
+                        }
+                        initialLimit = initialLimit + 5;
+                        currWord = ""
+                    }
+                }else{
+                    console.log("Not a valid word!")
                 }
             }
         });
     }
 }
 
+function processRow(word) {
+    // 0 - Not found (Grey)
+    // 1 - Found but wrong location (Orange)
+    // 2 - Found and correct location (Green)
+    var colors = [];
+    for(var i = 0; i < word.length; i ++){
+        colors.push(checkLetter(i, word[i].toLowerCase()));
+    }
+    changeColors(colors)
+    updateKeyboard(word, colors)
+    return colors
+}
+
+function checkLetter(index, inputChar){
+    if (targetWord[index] == inputChar){
+        return "green";
+    }
+    var ret = "grey";
+    for(var i = 0; i < targetWord.length; i ++){
+        if (inputChar == targetWord[i]){
+            ret = "orange"
+        }
+    }
+    return ret;
+}
+
+function changeColors(colors){
+    var colorIndex = 0;
+    for (var start = initialCount - 5; start < initialCount; start++){
+        var gridPosition = document.getElementsByClassName("box " + start.toString())[0]
+        gridPosition.id = colors[colorIndex]
+        colorIndex++;
+    }
+}
+
+function updateKeyboard(word, colors){
+    for (var i = 0; i < word.length; i++){
+        var kbPosition = document.getElementsByClassName(word[i].toUpperCase())[0]
+        if (kbPosition.id == "green"){
+            continue;
+        }
+        kbPosition.id = colors[i]
+    }
+}
+
 function enterIntoGrid(index, value) {
-    console.log(index.toString());
-    var gridPosition = document.getElementById("box " + index.toString())
-    console.log(gridPosition);
+    var gridPosition = document.getElementsByClassName("box " + index.toString())[0]
     gridPosition.innerHTML = value;
     currWord = currWord + value
     initialCount = initialCount + 1;
@@ -94,8 +146,7 @@ function enterIntoGrid(index, value) {
 
 function deleteIndex(index) {
     initialCount = index - 1 
-    var gridPosition = document.getElementById("box " + initialCount)
-    console.log(gridPosition);
+    var gridPosition = document.getElementsByClassName("box " + initialCount)[0]
     gridPosition.innerHTML = "";
     currWord = currWord.slice(0, -1)
 }
