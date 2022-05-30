@@ -1,8 +1,18 @@
 .center {
+    padding-top: 5px;
+    display: flex;
     text-align: center;
+    justify-content: center;
 }
-button { 
-    font-size: 5px;
+.btn {
+    font-size: 1em;
+    padding: 1rem 0.75rem;;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #fff;
+    color: #6c757d;
+    
 }
 
 .col {
@@ -10,12 +20,12 @@ button {
     box-sizing: border-box;
     display: inline-block;
     width: 25px;
-    height: 86px;
+    height: 67px;
     padding: 0;
   }
 
 .col {
-    font-size: 56px;
+    font-size: 44px;
     text-align: center;
 }
 
@@ -23,6 +33,20 @@ button {
     padding: 7px 0px;
 }
 
+.grid {
+    max-width: 335px;
+    position:fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 6%
+}
+
+.keyboard {
+    bottom: 10px;
+    position:fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
 #green {
     background-color: green;
     color: white;
@@ -38,9 +62,15 @@ button {
     color: white;
 }
 
-@media (min-width: 992px){
-    .container, .container-lg, .container-md, .container-sm {
-        max-width: 440px;
+@media print, screen and (max-height: 720px) {
+    .grid {
+        padding-top: 0;
+    }
+  }
+
+  @media print, screen and (max-width: 380px) {
+  .btn {
+    padding: 1rem 0.65rem;
     }
 }
 
